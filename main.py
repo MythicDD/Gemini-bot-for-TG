@@ -1,4 +1,5 @@
 import os
+import asyncio
 import google.generativeai as genai
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
@@ -15,12 +16,12 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = model.generate_content(user_message)
         await update.message.reply_text(response.text)
     except Exception as e:
-        await update.message.reply_text("Произошла ошибка, попробуй ещё раз.")
+        await update.message.reply_text("Ошибка, попробуй ещё раз.")
 
-def main():
+async def main():
     app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    app.run_polling()
+    await app.run_polling()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
