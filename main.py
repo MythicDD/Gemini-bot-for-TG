@@ -30,7 +30,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = model.generate_content(user_message)
         await update.message.reply_text(response.text)
     except Exception as e:
-        await update.message.reply_text("Ошибка, попробуй ещё раз.")
+        await update.message.reply_text(f"Ошибка: {str(e)}")
 
 def main():
     threading.Thread(target=run_server, daemon=True).start()
